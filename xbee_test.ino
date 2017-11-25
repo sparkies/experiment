@@ -151,22 +151,31 @@ void handleXBee() {
         threshhold = value;
       }
     }
-    else if (str.startsWith("get ")) {
-      auto sub = str.substring(4);
-
-      if (sub.startsWith("h")) {
-        XBee.println(humidity);
-      }
-      else if (sub.startsWith("th")) {
+    else if (str.startsWith("get")) {
+      if (str.length() == 3) {
+        XBee.print(temp);
+        XBee.print(" ");
+        XBee.print(humidity);
+        XBee.print(" ");
         XBee.println(threshhold);
       }
-      else if (sub.startsWith("t")) {
-        XBee.println(temp);
-      }
       else {
-        Serial.print("Invalid getter: ");
-        Serial.println(sub);
-        XBee.println("ERROR");
+        auto sub = str.substring(4);
+
+        if (sub.startsWith("h")) {
+          XBee.println(humidity);
+        }
+        else if (sub.startsWith("th")) {
+          XBee.println(threshhold);
+        }
+        else if (sub.startsWith("t")) {
+          XBee.println(temp);
+        }
+        else {
+          Serial.print("Invalid getter: ");
+          Serial.println(sub);
+          XBee.println("ERROR");
+        }
       }
     }
   }
