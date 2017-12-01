@@ -145,14 +145,17 @@ void handleXBee() {
       if (value == 0) {
         Serial.print("Invalid value received: ");
         Serial.println(value);
-        XBee.println("ERROR");
+        XBee.println("ERROR: Invalid value");
       }
       else {
         threshhold = value;
       }
     }
     else if (str.startsWith("get")) {
-      if (str.length() == 3) {
+      if (isnan(temp) || isnan(humidity)) {
+        XBee.println("ERROR: Invalid readings");
+      }
+      else if (str.length() == 3) {
         XBee.print(temp);
         XBee.print(" ");
         XBee.print(humidity);
@@ -174,7 +177,7 @@ void handleXBee() {
         else {
           Serial.print("Invalid getter: ");
           Serial.println(sub);
-          XBee.println("ERROR");
+          XBee.println("ERROR: Invalid parameter");
         }
       }
     }
